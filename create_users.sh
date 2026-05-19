@@ -38,3 +38,5 @@ for username in "$@"; do
   chown "$username":"$username" "$HOME_DIR/welcome.txt"
 
 done
+
+#push for test
