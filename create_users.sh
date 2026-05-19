@@ -39,4 +39,3 @@ for username in "$@"; do
 
 done
 
-#push for test
