@@ -8,7 +8,7 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Loopa igenom alla användarnamn som skickas in som argument
+# Loop 1: Skapa alla användare och mappar först
 for username in "$@"; do
 
   # Skapa användarkontot med en hemkatalog
@@ -23,9 +23,15 @@ for username in "$@"; do
   chown -R "$username":"$username" "$HOME_DIR"
   chmod 700 "$HOME_DIR/Documents" "$HOME_DIR/Downloads" "$HOME_DIR/Work"
 
+done
+
+# Loop 2: Skapa välkomstfiler när alla användare finns i systemet
+for username in "$@"; do
+
+  HOME_DIR="/home/$username"
+
   # Skapa välkomstfilen med en hälsning och lista på övriga användare
   echo "Välkommen $username" > "$HOME_DIR/welcome.txt"
-  echo "Övriga användare på systemet:" >> "$HOME_DIR/welcome.txt"
   cut -d: -f1 /etc/passwd | grep -v "^$username$" >> "$HOME_DIR/welcome.txt"
 
   # Sätt rätt ägare på välkomstfilen
